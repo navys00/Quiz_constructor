@@ -5,15 +5,17 @@ import App from './App';
 import { BrowserRouter } from "react-router-dom";
 import reducer, { initialState } from './redux/store';
 import { StateProvider } from './redux/StateProvider';
+import { Provider } from 'react-redux';
+import redux from './redux';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <StateProvider initialState={initialState} reducer={reducer}>
+      <Provider store={redux}>
         <App />
-      </StateProvider>
+      </Provider>
     </BrowserRouter>
   </React.StrictMode>
 );

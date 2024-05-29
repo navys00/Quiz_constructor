@@ -78,13 +78,14 @@ align-items:center;
 justify-content:space-between;
 `
 export const Add_question_body = styled.div`
+width:100%;
     display:flex;
     align-items:center;
 `
 
 export const Question = styled.input`
+    border:0;
     box-sizing:border-box;
-    margin-top:10px;
     font-family:Google Sans, Roboto,Arial,sans-serif;
     font-size:15px;
     font-weight:400;
@@ -100,7 +101,23 @@ export const Question = styled.input`
     padding:10px;
     &:focus{
         border-bottom:1px solid rgb(103,58,183);
-        backgound-color:#f4f4f9;
+        background-color:#f4f4f9;
+    }
+    &:hover{
+        border-bottom:1px solid rgb(103,58,183);
+        background-color:#f4f4f9;
+    }
+`
+export const Option = styled.input`
+border:0;
+width:100%;
+    &:focus{
+        border-bottom:1px solid rgb(103,58,183);
+        background-color:#f4f4f9;
+    }
+    &:hover{
+        border-bottom:1px solid rgb(103,58,183);
+        background-color:#f4f4f9;
     }
 `
 
@@ -117,7 +134,7 @@ export const Select_ = styled(Select)`
 `
 export const MenuItem_ = styled(MenuItem)`
 
-    align-items:center !important;
+    
 `
 export const Text_input = styled.input`
     outline:none;

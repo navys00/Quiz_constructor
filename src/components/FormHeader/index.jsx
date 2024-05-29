@@ -11,11 +11,11 @@ import { Form_header, Form_header_left, Form_name, Form_header_Right } from './s
 
 export const FormHeader = () => {
     const navigate = useNavigate()
-    const [{ doc_name }, dispatch] = useStateValue()
+    //const [{ doc_name }, dispatch] = useStateValue()
     return (
         <Form_header>
             <Form_header_left>
-                <Form_name type='text' placeholder='Untitled form' value={doc_name}></Form_name>
+                <Form_name type='text' placeholder='Untitled form' ></Form_name>
 
                 <FiStar style={{ marginRight: '10px' }} />
                 <span style={{ fontSize: '12px', fontWeight: '600' }}>All changes saved</span>

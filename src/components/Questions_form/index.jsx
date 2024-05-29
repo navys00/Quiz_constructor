@@ -13,19 +13,22 @@ import { Accordion, AccordionSummary, Switch, Select, AccordionDetails, Button, 
 import { FcRightUp } from "react-icons/fc"
 import CloseIcon from '@mui/icons-material/Close';
 import { useState, useEffect } from 'react';
-import { Add_footer, Add_question, Add_question_body, Add_question_bottom, Add_question_bottom_left, Add_question_top, MenuItem_, Points, Question, Question_FormDiv, Question_Form_top, Question_Form_top_desc, Question_Form_top_name, Question_boxes, Question_edit, Question_title_section, Save_form, Saved_question, Section, Select_, Text_input, Top_header } from './style';
+import { Add_footer, Add_question, Add_question_body, Add_question_bottom, Add_question_bottom_left, Add_question_top, MenuItem_, Points, Question, Question_FormDiv, Question_Form_top, Question_Form_top_desc, Question_Form_top_name, Question_boxes, Question_edit, Question_title_section, Save_form, Saved_question, Section, Select_, Text_input, Top_header, Option } from './style';
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import { ActionTypes } from '../../redux/store';
 import { useStateValue } from '../../redux/StateProvider';
+import { AddNewDoc } from '../../redux/Slice';
 
 export const Question_Form = () => {
     const { id } = useParams()
-    //const dispatch = useDispatch()
-    const [{ }, dispatch] = useStateValue()
+    const dispatch = useDispatch()
+    //const [{ }, dispatch] = useStateValue()
     //console.log(id)
+    const [doc_name, setDoc_name] = useState()
+    const [doc_desc, setDoc_desc] = useState()
     const [questions, setquestion] = useState(
         [{
             questionText: "what is 2+2",
@@ -36,42 +39,41 @@ export const Question_Form = () => {
                 { optionText: "4" },
 
             ],
-            answer: false,
-            answerKey: "",
-            points: 0,
+            //answer: false,
+            //answerKey: "",
+            //points: 0,
             open: true,
             required: false
         }]
     )
 
     useEffect(() => {
-        axios.get(`http://localhost:4444/data/${id}`)
-            .then(res => {
-                console.log(res.data.ques_data)
-                setDoc_name(res.data.ques_data.document_name)
-                setDoc_desc(res.data.ques_data.document_desc)
-                setquestion(res.data.ques_data.questions)
-                dispatch({
-                    type: ActionTypes.SET_DOC_NAME,
-                    doc_name: res.data.ques_data.document_name
-                })
-                dispatch({
-                    type: ActionTypes.SET_DOC_DESC,
-                    doc_desc: res.data.ques_data.document_desc
-                })
-                dispatch({
-                    type: ActionTypes.SET_QUESTION,
-                    questions: res.data.ques_data.questions
-                })
-            })
-            .catch(err => {
-                console.log(err)
-                //alert('не удалось загрузить анкету')
-            })
+        // axios.get(`http://localhost:4444/get_data/${id}`)
+        //     .then(res => {
+        //         console.log(res.data)
+        //         setDoc_name(res.data.document_name)
+        //         setDoc_desc(res.data.doc_desc)
+        //         setquestion(res.data.questions)
+        //         // dispatch({
+        //         //     type: ActionTypes.SET_DOC_NAME,
+        //         //     doc_name: res.data.ques_data.document_name
+        //         // })
+        //         // dispatch({
+        //         //     type: ActionTypes.SET_DOC_DESC,
+        //         //     doc_desc: res.data.ques_data.document_desc
+        //         // })
+        //         // dispatch({
+        //         //     type: ActionTypes.SET_QUESTION,
+        //         //     questions: res.data.ques_data.questions
+        //         // })
+        //     })
+        //     .catch(err => {
+        //         console.log(err)
+        //         //alert('не удалось загрузить анкету')
+        //     })
     }, [])
 
-    const [doc_name, setDoc_name] = useState('Untitled document')
-    const [doc_desc, setDoc_desc] = useState('Add description')
+
 
     const ChangeQuestion = (text, i) => {
         let newQuestion = [...questions]
@@ -191,17 +193,14 @@ export const Question_Form = () => {
         setquestion(question)
     }
 
-    const comittoDB = async (id) => {
+    const comittoDB = () => {
         //console.log(questions)
-        dispatch({
-            type: ActionTypes.SET_QUESTION,
-            questions: questions
-        })
-        await axios.post(`http://localhost:4444/add_questions/${id}`, {
-            "document_name": doc_name,
-            "doc_desc": doc_desc,
-            'questions': questions
-        })
+        // dispatch({
+        //     type: ActionTypes.SET_QUESTION,
+        //     questions: questions
+        // })
+        dispatch(AddNewDoc({ id, doc_name, doc_desc, questions }))
+        //console.log(id, doc_name, doc_desc, questions)
     }
 
     const handleExpand = (i) => {
@@ -222,11 +221,12 @@ export const Question_Form = () => {
         return questions.map((ques, index) => (
 
             <Accordion onChange={() => { handleExpand(index) }} expanded={questions[index].open} >
-                <AccordionSummary
-                    elevation={1}
-                    style={{ width: '100%' }}
-                >
-                    {!questions[index].open ? (
+                {!questions[index].open ? (
+                    <AccordionSummary
+                        elevation={1}
+                        style={{ width: '100%' }}
+                    >
+
                         <Saved_question>
                             <Typography style={{ fontSize: "15px", fontWeight: "400", letterSpacing: '.1px', lineHeight: "24px", paddingBottom: '8px' }}>
                                 {index + 1}.{questions[index].questionText}
@@ -246,11 +246,13 @@ export const Question_Form = () => {
                             ))}
 
                         </Saved_question>
-                    ) : (
-                        <div></div>
-                    )}
-                </AccordionSummary>
 
+
+
+                    </AccordionSummary>
+                ) : (
+                    <div></div>
+                )}
 
                 <Question_boxes>
                     {!questions[index].answer ? (
@@ -267,12 +269,12 @@ export const Question_Form = () => {
                             {ques.options.map((op, j) => (
                                 <Add_question_body key={j}>
                                     {
-                                        (ques.qustionType != "text") ?
+                                        (ques.qustionType !== "text") ?
                                             <input type={ques.qustionType} style={{ marginRight: "10px" }} /> :
                                             <ShortTextIcon style={{ marginRight: "10px" }} />
                                     }
-                                    <div>
-                                        <input type='text' placeholder='option' value={ques.options[j].optionText} onChange={(e) => { ChangeOptionValue(e.target.value, index, j) }}></input>
+                                    <div style={{ width: '90%' }}>
+                                        <Option type='text' placeholder='option' value={ques.options[j].optionText} onChange={(e) => { ChangeOptionValue(e.target.value, index, j) }}></Option>
                                     </div>
 
                                     <IconButton onClick={() => { deleteOption(index, j) }} aria-label='delete'>
@@ -282,13 +284,13 @@ export const Question_Form = () => {
                             ))}
                             {ques.options.length < 5 ? (
                                 <Add_question_body>
-                                    <FormControlLabel disabled control={
-                                        (ques.qustionType !== 'text') ?
-                                            <input type={ques.qustionType} color='primary' style={{ marginLeft: '10px', marginRight: '10px' }} disabled /> :
-                                            <ShortTextIcon style={{ marginRight: '10px' }} />
+                                    <FormControlLabel style={{ marginLeft: '1px' }} disabled control={
+                                        (ques.qustionType === 'text') ?
+                                            <ShortTextIcon />
+                                            :
+                                            <input type={ques.qustionType} color='primary' style={{ marginRight: '10px' }} disabled />
                                     } label={
                                         <div>
-                                            <Text_input type='text' style={{ fontSize: '13px', width: '60px' }} placeholder='Add other'></Text_input>
                                             <Button onClick={() => { AddOption(index) }} size='small' style={{ textTransform: 'none', color: '#4285f4', fontSize: '13px', fontWeight: '600' }}>Add option</Button>
                                         </div>
                                     }
@@ -314,10 +316,7 @@ export const Question_Form = () => {
                                     <IconButton onClick={() => { deleteQuestion(index) }} aria-label='delete'>
                                         <BsTrash />
                                     </IconButton>
-                                    <span style={{ color: '#5f6368', fontSize: '13px' }}>Required</span><Switch name='checkedA' color='primary' onClick={() => { requiredQuestion(index) }} checked={questions[index].required}></Switch>
-                                    <IconButton>
-                                        <MoreVertIcon />
-                                    </IconButton>
+                                    <span style={{ color: '#5f6368', fontSize: '13px' }}>Обязательный вопрос</span><Switch name='checkedA' color='primary' onClick={() => { requiredQuestion(index) }} checked={questions[index].required}></Switch>
                                 </Add_question_bottom>
                             </Add_footer>
                         </Add_question>) : (
@@ -328,7 +327,6 @@ export const Question_Form = () => {
                             </Top_header>
                             <Add_question_top>
                                 <Question type="text" placeholder='Question' value={ques.questionText} disabled></Question>
-                                <Points type="number" min={0} step={1} placeholder='0' onChange={(e) => { setquestionPoints(e.target.value, index) }}></Points>
                             </Add_question_top>
                             {ques.options.map((op, j) => (
                                 <Add_question_body key={j} style={{ marginLeft: '8px', marginBottom: '10px', marginTop: '5px' }}>
@@ -367,7 +365,7 @@ export const Question_Form = () => {
                     )}
 
                     {!ques.answer ? (<Question_edit>
-                        <AddCircleOutlineIcon onClick={AddNewQuestion} style={{ padding: '8px 5px', color: '#5f6368' }} />
+                        <AddCircleOutlineIcon onClick={AddNewQuestion} style={{ cursor: 'pointer', padding: '8px 5px', color: '#5f6368' }} />
                         {/* <OndemandVideoIcon/> */}
                         <CropOriginalIcon style={{ padding: '8px 5px', color: '#5f6368' }} />
                         <TextFieldsIcon style={{ padding: '8px 5px', color: '#5f6368' }} />
@@ -386,14 +384,14 @@ export const Question_Form = () => {
                 <Section>
                     <Question_title_section>
                         <Question_Form_top>
-                            <Question_Form_top_name type='text' placeholder='untitled document' onChange={(e) => { setDoc_name(e.target.value) }} />
-                            <Question_Form_top_desc type='text' placeholder='form description' onChange={(e) => { setDoc_desc(e.target.value) }} />
+                            <Question_Form_top_name type='text' placeholder='Untitled document' value={doc_name} onChange={(e) => { setDoc_name(e.target.value) }} />
+                            <Question_Form_top_desc type='text' placeholder='Add description' value={doc_desc} onChange={(e) => { setDoc_desc(e.target.value) }} />
                         </Question_Form_top>
                     </Question_title_section>
 
                     {questionUI()}
                     <Save_form>
-                        <Button variant='contained' color='primary' onClick={() => { comittoDB(id) }}>Save</Button>
+                        <Button variant='contained' color='primary' onClick={comittoDB}>Save</Button>
                     </Save_form>
                 </Section>
             </Question_FormDiv>

@@ -22,6 +22,7 @@ export const User_form = () => {
     }
     useEffect(() => {
         questions.map((q) => {
+            console.log(q)
             answer.push({
                 'question': q.questionText,
                 'answer': ''

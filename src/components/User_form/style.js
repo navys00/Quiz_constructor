@@ -5,11 +5,12 @@ export const Submit_ = styled.div`
 `
 export const User_form_div = styled.div`
     background-color:#f4f4f9;
-    height:100%;
+    display:flex;
+    height:100vh;
     padding:20px;
 `
 export const User_form_section = styled.div`
-    margin:auto;
+    margin:10px auto auto auto;
     width:44%;
     display:flex;
     flex-direction:column;
@@ -38,7 +39,7 @@ export const User_form_submit = styled.div`
 `
 
 export const User_footer = styled.div`
-margin-bottom:0;
+bottom:0;
 text-align:center;
 font-size:medium;
 font-weight:500;

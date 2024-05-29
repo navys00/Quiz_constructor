@@ -6,6 +6,15 @@ export const Main_Body = styled.div`
     margin-right:160px;
     
 `
+export const Container = styled.div`
+height:200px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    margin:0px 10px 0px 10px;
+`
+
 export const Main_BodyTop = styled.div`
     display:flex;
     margin-top:15px;
@@ -41,8 +50,6 @@ export const DocCard = styled.div`
 display:flex;
 flex-direction:column;
 box-sizing:border-box;
-width:200px;
-margin-right:20px;
 cursor:pointer;
 &:hover{
     border:1px solid #6e2594;
@@ -57,8 +64,10 @@ export const DocCardImg = styled.img`
 `
 export const DocCardContent = styled.div`
     display:flex;
-    flex-direction:column;
+    width:100%;
     justify-content:space-between;
+    align-items:center;
+    flex-direction:row;
 `
 export const DocContent = styled.div`
 display:flex;

@@ -16,7 +16,7 @@ export const TemplateTop = styled.div`
 `
 export const TemplateBody = styled.div`
 display:flex;
-justify-content:space-between;
+margin: 0px 100px 0px 100px;
 `
 export const TemplateLeft = styled.div`
 `
@@ -49,6 +49,8 @@ export const GalleryButton = styled.div`
 `
 
 export const CardTitle = styled.p`
+display:flex;
+justify-content:center;
     font-size:14px;
     margin-top:2px;
     color:#202124;
