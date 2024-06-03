@@ -19,6 +19,27 @@ export const fetchDocs = createAsyncThunk(
     }
 );
 
+
+export const fetchDocsData = createAsyncThunk(
+    'questions/fetchDocsData',
+    async function (id, { rejectWithValue }) {
+        try {
+            const response = await fetch(`http://localhost:4444/get_data/${id}`);
+
+            if (!response.ok) {
+                throw new Error('Server Error!');
+            }
+
+            const data = await response.json();
+            //console.log(data)
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
+
 export const DeleteDoc = createAsyncThunk(
     'questions/DeleteDoc',
     async function (id, { rejectWithValue, dispatch }) {
@@ -68,6 +89,30 @@ export const AddNewDoc = createAsyncThunk(
 );
 
 
+export const AddNewAnswers = createAsyncThunk(
+    'questions/AddNewAnswers',
+    async function ({ id, answer_id, doc_name, answers }, { rejectWithValue, dispatch }) {
+        try {
+            const response = await axios.post(`http://localhost:4444/student_response/${answer_id}`, {
+                "Answer_id": answer_id,
+                "doc_id": id,
+                "document_name": doc_name ? doc_name : 'Новая форма',
+                "Answers": answers
+            })
+
+            if (!response.ok) {
+                throw new Error('Server Error!');
+            }
+
+            const data = await response.json();
+            //dispatch(AddNewDoc({ id, doc_name, doc_desc, questions }))
+            return data;
+        } catch (error) {
+            return rejectWithValue(error.message)
+        }
+    }
+);
+
 export const addNewQuestion = createAsyncThunk(
     'questions/addNewQuestion',
     async function (tmp, { rejectWithValue, dispatch }) {
@@ -115,6 +160,7 @@ const questionSlice = createSlice({
     name: 'questions',
     initialState: {
         forms: [],
+        //answer_forms:[],
         //questions: [],
         //doc_names: [],
         state: null,

@@ -17,14 +17,16 @@ import { Add_footer, Add_question, Add_question_body, Add_question_bottom, Add_q
 import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { ActionTypes } from '../../redux/store';
 import { useStateValue } from '../../redux/StateProvider';
-import { AddNewDoc } from '../../redux/Slice';
+import { AddNewDoc, fetchDocsData } from '../../redux/Slice';
 
 export const Question_Form = () => {
     const { id } = useParams()
     const dispatch = useDispatch()
+    const files = useSelector(state => state.questions.forms);
+    const updatequestions = { ...files }
     //const [{ }, dispatch] = useStateValue()
     //console.log(id)
     const [doc_name, setDoc_name] = useState()
@@ -48,6 +50,42 @@ export const Question_Form = () => {
     )
 
     useEffect(() => {
+        fetch(`http://localhost:4444/get_data/${id}`)
+            .then(async res => {
+                const data = await res.json()
+                setDoc_name(data.document_name)
+                setDoc_desc(data.doc_desc)
+                setquestion(data.questions)
+            })
+        // if (updatequestions !== undefined) {
+        //     updatequestions.map((item, key) => {
+        //         if (item.doc_id === id) {
+        //             setDoc_desc(item.doc_desc)
+        //             setDoc_name(item.document_name)
+        //             setquestion(item.questions)
+        //         }
+        //     })
+        // }
+        // const updatequestions = files
+        // if (updatequestions !== undefined) {
+        //     updatequestions.map((item, key) => {
+        //         if (item.doc_id === id) {
+        //             setDoc_name(item.document_name)
+        //             setDoc_desc(item.doc_desc)
+        //             //const updatequestions = item.questions
+        //             setquestion(item.questions)
+
+        //             //console.log(updatequestions)
+        //         }
+
+        //     })
+        // }
+        // files !== undefined ? files.map((item, key) => {
+        //     setDoc_name(item.document_name)
+        //     setDoc_desc(item.doc_desc)
+        //     setquestion(item.questions)
+        // }) : ''
+        //files !==undefined ? files.map(item=>{})
         // axios.get(`http://localhost:4444/get_data/${id}`)
         //     .then(res => {
         //         console.log(res.data)
@@ -200,6 +238,7 @@ export const Question_Form = () => {
         //     questions: questions
         // })
         dispatch(AddNewDoc({ id, doc_name, doc_desc, questions }))
+        console.log(questions)
         //console.log(id, doc_name, doc_desc, questions)
     }
 
@@ -229,15 +268,15 @@ export const Question_Form = () => {
 
                         <Saved_question>
                             <Typography style={{ fontSize: "15px", fontWeight: "400", letterSpacing: '.1px', lineHeight: "24px", paddingBottom: '8px' }}>
-                                {index + 1}.{questions[index].questionText}
+                                {index + 1}. {questions[index].questionText}
                             </Typography>
                             {ques.options.map((option, index2) => (
                                 <div key={index2}>
                                     <div style={{ display: 'flex' }}>
                                         <FormControlLabel style={{ marginLeft: "5px", marginBottom: "5px" }} disabled control={<input type={ques.qustionType}
                                             color="primary" style={{ marginRight: "3px" }} />} label={ //required={ques.type} вернуть в input если что 
-                                                <Typography style={{ fontSize: "13px", fontWeight: "400", letterSpacing: '.2px', lineHeight: "20px", color: '#202124' }}>
-                                                    {ques.options[index2].optionText}
+                                                <Typography Typography style={{ fontSize: "13px", fontWeight: "400", letterSpacing: '.2px', lineHeight: "20px", color: '#202124' }}>
+                                                    {ques.qustionType === 'text' ? '' : ques.options[index2].optionText}
                                                 </Typography>
                                             } />
                                     </div>
@@ -259,9 +298,8 @@ export const Question_Form = () => {
                         <Add_question>
                             <Add_question_top>
                                 <Question type="text" placeholder='Question' value={ques.questionText} onChange={(e) => { ChangeQuestion(e.target.value, index) }}></Question>
-                                <CropOriginalIcon style={{ color: '#5f6368' }} />
-                                <Select_ style={{ color: '#5f6368', fontSize: "13px" }}>
-                                    <MenuItem_ id='text' value="Text" onClick={() => { addQuestionType(index, 'text') }} ><SubjectIcon style={{ marginRight: "10px" }} />Paragraph</MenuItem_>
+                                <Select_ >
+                                    <MenuItem_ id='text' value="Text" onClick={() => { addQuestionType(index, 'text') }} ><SubjectIcon style={{ marginRight: "10px", color: "#70757a" }} />Paragraph</MenuItem_>
                                     <MenuItem_ id='checkbox' value="checkbox" onClick={() => { addQuestionType(index, 'checkbox') }}><CheckBoxIcon style={{ marginRight: "10px", color: "#70757a" }} />CheckBox</MenuItem_>
                                     <MenuItem_ id='radio' value="Radio" style={{ height: "36px" }} onClick={() => { addQuestionType(index, 'radio') }}><RadioButtonUncheckedIcon style={{ marginRight: "10px", color: "#70757a" }} />Multiple choice</MenuItem_>
                                 </Select_>
@@ -270,7 +308,7 @@ export const Question_Form = () => {
                                 <Add_question_body key={j}>
                                     {
                                         (ques.qustionType !== "text") ?
-                                            <input type={ques.qustionType} style={{ marginRight: "10px" }} /> :
+                                            <input type={ques.qustionType} name='1' style={{ marginRight: "10px" }} /> :
                                             <ShortTextIcon style={{ marginRight: "10px" }} />
                                     }
                                     <div style={{ width: '90%' }}>

@@ -206,3 +206,120 @@
 
 
                                     /*{questions[index].answer ? (<div>ffff</div>) : (<div>eeee</div>)}*/</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                                    <Typography style={{ fontSize: '15px', fontWeight: '400', letterSpacing: '.1px', lineHeight: '24px', paddingBottom: '8px' }}>{qindex + 1}. {question.questionText}</Typography>
+                                {
+                                    question.options.map((ques, index) => (
+                                        <div key={index} style={{ marginBottom: '5px' }}>
+                                            <div style={{ display: 'flex' }}>
+                                                <Form_check>
+                                                    {
+                                                        question.qustionType === 'radio' ? (
+                                                            <label>
+                                                                <Form_check_input
+                                                                    type={'radio'}
+                                                                    name={qindex}
+                                                                    value={ques.optionText}
+                                                                    required={question.required}
+                                                                    style={{ marginLeft: '5px', marginRight: '5px' }}
+                                                                    onChange={(e) => { selectCheck(e.target.checked, question.questionText, ques.optionText) }}
+                                                                />{ques.optionText}
+                                                            </label>) :
+                                                            question.qustionType === 'text' ? (
+                                                                <label>
+
+                                                                    <Form_check_input
+                                                                        type={'text'}
+                                                                        name={qindex}
+                                                                        value={''}
+                                                                        required={question.required}
+                                                                        style={{ marginLeft: '5px', marginRight: '5px' }}
+                                                                        onChange={(e) => { selectinput(question.questionText, e.target.value) }}
+                                                                    />
+
+                                                                </label>
+                                                            ) :
+                                                                (
+                                                                    <label>
+                                                                        <Form_check_input
+                                                                            type={question.qustionType}
+                                                                            name={qindex}
+                                                                            value={ques.optionText}
+                                                                            required={question.required}
+                                                                            style={{ marginLeft: '5px', marginRight: '5px' }}
+                                                                            onChange={() => { select(question.questionText, ques.optionText) }}
+                                                                        />{ques.optionText}
+                                                                    </label>
+                                                                )
+
+                                                    }
+                                                </Form_check>
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+
+                                <User_footer>
+                        ННГУ 2024
+                    </User_footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    quest.qustionType === 'radio' ? (
+                        <label>
+                            <Form_check_input
+                                type={'radio'}
+
+                                value={ques.optionText}
+                                required={ques.required}
+                                style={{ marginLeft: '5px', marginRight: '5px' }}
+                                onChange={(e) => { selectRadio(e.target.checked, ques.questionText, ques.optionText) }}
+                            />{ques.optionText}
+                        </label>) :
+                        quest.qustionType === 'text' ? (
+                            <label>
+
+                                <Form_check_input
+                                    type={'text'}
+
+                                    value={""}
+                                    required={ques.required}
+                                    style={{ marginLeft: '5px', marginRight: '5px' }}
+                                    onChange={(e) => { selectText(ques.questionText, e.target.value) }}
+                                />
+
+                            </label>
+                        ) :
+                            (
+                                <label>
+                                    <Form_check_input
+                                        type={'checkbox'}
+
+                                        value={ques.optionText}
+                                        required={ques.required}
+                                        style={{ marginLeft: '5px', marginRight: '5px' }}
+                                        onChange={() => { selectCheck(ques.questionText, ques.optionText) }}
+                                    />{ques.optionText}
+                                </label>
+                            )

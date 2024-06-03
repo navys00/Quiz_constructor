@@ -122,6 +122,7 @@ width:100%;
 `
 
 export const Select_ = styled(Select)`
+    color: #70757a !important;
     height:40px;
     width:230px;
     padding:5px 15px;

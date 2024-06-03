@@ -7,10 +7,13 @@ import ColorLensIcon from '@mui/icons-material/ColorLens';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Button from '@mui/material'
 import { useStateValue } from '../../redux/StateProvider'
+import { useParams } from 'react-router-dom'
 import { Form_header, Form_header_left, Form_name, Form_header_Right } from './style'
 
 export const FormHeader = () => {
     const navigate = useNavigate()
+    const { id } = useParams()
+    //console.log(id)
     //const [{ doc_name }, dispatch] = useStateValue()
     return (
         <Form_header>
@@ -24,7 +27,8 @@ export const FormHeader = () => {
                 <IconButton>
                     <ColorLensIcon size="small" />
                 </IconButton>
-                <IconButton onClick={() => { navigate('/response') }}>
+                <IconButton onClick={() => { navigate(`/response/${id}`) }}>
+
                     <AiOutlineEye />
                 </IconButton>
                 <IconButton>

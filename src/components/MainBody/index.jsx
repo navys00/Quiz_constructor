@@ -26,6 +26,7 @@ export const MainBody = () => {
         // files.filter(item => item !== id);
     }
     var files = useSelector(state => state.questions.forms);
+
     useEffect(() => {
         dispatch(fetchDocs())
         //console.log(fetchQuestions())
@@ -39,7 +40,6 @@ export const MainBody = () => {
         //         alert('ошибка при получении данных')
         //     })
     }, [files])
-
     //console.log(files)
     // const handleClick = (event) => {
     //     event.stopPropagation()

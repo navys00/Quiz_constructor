@@ -2,11 +2,11 @@ import styled from "styled-components"
 
 export const Submit_ = styled.div`
     background-color:#f4f4f9;
+    height:100%;
 `
 export const User_form_div = styled.div`
     background-color:#f4f4f9;
     display:flex;
-    height:100vh;
     padding:20px;
 `
 export const User_form_section = styled.div`

@@ -18,33 +18,9 @@ app.use(function (req, res, next) {
     next()
 })
 
-// app.post("/add_form/:doc_id", (req, res) => {
-//     //fs.writeFileSync("./files/ааа.json", 'aa')
-//     // let doc_data = req.body
-//     //let name = req.params.doc_id
-//     let data = JSON.stringify(req.body)
-//     try {
-//         if (fs.existsSync(`./files/${req.params.doc_id}.json`)) {
-//             fs.openSync(`./files/${req.params.doc_id}.json`, 'w+')
-//             fs.writeFileSync(`./files/${req.params.doc_id}.json`, data)
-//         }
-//         else {
-//             fs.writeFileSync(`./files/${req.params.doc_id}.json`, data)
-//         }
-
-//         res.send({ message: 'success' })
-//     }
-//     catch (err) {
-//         console.log(err)
-//     }
-
-// })
-
 
 app.post("/post_questions/:doc_id", (req, res) => {
-    //fs.writeFileSync("./files/ааа.json", 'aa')
-    // let doc_data = req.body
-    //let name = path.parse(req.params.doc_id).name
+
     console.log(req.body)
     let data = JSON.stringify(req.body)
     try {
@@ -65,24 +41,19 @@ app.post("/post_questions/:doc_id", (req, res) => {
 })
 
 app.post("/student_response/:doc_id", (req, res) => {
-    try {
-        let date = new Date()
-        let workbook = new excel.Workbook()
-        let worksheet = workbook.addWorksheet(`${req.params.doc_id}`)
 
-        worksheet.columns = [{ header: 'Time: ', 'key': 'datetime' }, ...req.body.column]
-        worksheet.columns.forEach(column => {
-            column.width = column.header.length < 12 ? 12 : column.header.length
-        })
-        worksheet.getRow(1).font = { bold: true }
-        req.body.answer_data.forEach((e, index) => {
-            const rowIndex = index + 2
-            worksheet.addRow({
-                date, ...e
-            })
-        })
-        workbook.xlsx.writeFile(`${req.params.doc_id}.xlsx`)
-        res.send({ msg: "success" })
+    let data = JSON.stringify(req.body)
+    //console.log(data)
+    try {
+        if (fs.existsSync(`./answers/${req.params.doc_id}.json`)) {
+            fs.openSync(`./answers/${req.params.doc_id}.json`, 'w+')
+            fs.writeFileSync(`./answers/${req.params.doc_id}.json`, data)
+        }
+        else {
+            fs.writeFileSync(`./answers/${req.params.doc_id}.json`, data)
+        }
+
+        res.send({ message: 'success' })
     }
     catch (err) {
         console.log(err)
@@ -121,9 +92,13 @@ app.get('/get_all_filenames', (req, res) => {
         try {
             const data = [];
             files.forEach(file => {
-                //const obj = { doc_name: '', doc_desc: '', filename: '' }
+
+                const obj = { doc_name: '', doc_desc: '', filename: '' }
                 const filePath = path.join(directoryPath, file);
                 const fileData = JSON.parse(fs.readFileSync(filePath, 'utf8'))
+                obj.doc_id = fileData.doc_id
+                obj.doc_name = fileData.document_name
+                obj.doc_name = fileData.doc_desc
                 data.push(fileData)
                 //console.log(fileData)
             });
