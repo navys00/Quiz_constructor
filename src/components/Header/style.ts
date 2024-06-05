@@ -2,7 +2,7 @@ import styled from "styled-components"
 import Summarize from "@mui/icons-material/Summarize"
 import SearchIcon from '@mui/icons-material/Search';
 export const HeaderDiv = styled.div`
-background-color:#9932CC;
+background-color:green;
     position:sticky;
     margin:0px 10px;
     padding: 5px 0px;

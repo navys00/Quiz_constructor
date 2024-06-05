@@ -8,7 +8,7 @@ import { PaperDiv, TabDiv, TabsDiv } from './style'
 
 export const CenteredTabs = () => {
     return (
-        <div>
+        <div >
             <PaperDiv>
                 <TabsDiv centered textColor='primary' indicatorColor='primary'>
                     <TabDiv label="Вопросы" />

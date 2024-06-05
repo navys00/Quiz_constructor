@@ -1,0 +1,1 @@
+export const alphabeticSymbolRegExp = /^[0-9\s]+$/;

@@ -1,12 +1,14 @@
 import styled from "styled-components"
+import { TextField } from "@mui/material"
 
-export const Submit_ = styled.div`
-    background-color:#f4f4f9;
-    height:100%;
-`
+interface IProps {
+    Error: boolean,
+}
+
 export const User_form_div = styled.div`
-    background-color:#f4f4f9;
+    background-color:rgb(203,255,198);
     display:flex;
+    height:100%;
     padding:20px;
 `
 export const User_form_section = styled.div`
@@ -17,14 +19,15 @@ export const User_form_section = styled.div`
 `
 export const User_title_section = styled.div`
     background-color:white;
-    border-top:8px solid rgb(103,58,183);
+    border-top:8px solid green;
     border-radius:8px;
     padding:15px 25px;
     text-transform:capitalize;
     margin-bottom:8px;
 `
-export const User_form_questions = styled.div`
+export const User_form_questions = styled.div<IProps>`
 background-color:white;
+border:${props => (props.Error ? '2px solid red' : '')};
 border-radius:8px;
 padding:30px 25px;
 text-transform:capitalize;
@@ -33,6 +36,9 @@ margin-bottom:8px;
 export const Form_check = styled.div`
 `
 export const Form_check_input = styled.input`
+`
+export const TextField_input = styled(TextField)`
+    
 `
 export const User_form_submit = styled.div`
     float:left;

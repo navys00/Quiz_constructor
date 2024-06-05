@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 export const PaperDiv = styled(Paper)`
     flex-grow:1;
+    background-color: rgb(203,255,198);
 `
 export const TabsDiv = styled(Tabs)`
 height:10;

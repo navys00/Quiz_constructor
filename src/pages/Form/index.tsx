@@ -7,7 +7,6 @@ export const Form = () => {
     return (
         <>
             <FormHeader />
-            <CenteredTabs />
             <Question_Form />
         </>
     )

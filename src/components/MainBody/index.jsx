@@ -5,7 +5,7 @@ import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import { IconButton, MenuItem } from '@mui/material';
 import MoreVert from '@mui/icons-material/MoreVert';
-import example3 from '../../images/example3.jpg'
+import example3 from '../../images/bkBdwrhBfgM.jpg'
 import { BsTrash } from 'react-icons/bs'
 import { useEffect, useState } from 'react';
 import { Menu } from '@mui/material';
@@ -71,7 +71,7 @@ export const MainBody = () => {
                             <DocCardImg src={example3} />
                         </DocCard>
                         <DocCardContent>
-                            <Storage></Storage>
+                            <Storage style={{ backgroundColor: 'green' }}></Storage>
                             <span>{item.document_name}</span>
                             <IconButton onClick={(e) => { e.stopPropagation(); Setopen(!open) }}>
                                 <MoreVert />

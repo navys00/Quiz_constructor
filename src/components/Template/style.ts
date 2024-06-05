@@ -26,7 +26,7 @@ display:flex;
 export const CardImage = styled.img`
     box-sizing:border-box;
     height:120px;
-    width:160px;
+    width:120px;
     cursor:pointer;
     border-radius:2px;
     border:0.2px solid #fffdf7;

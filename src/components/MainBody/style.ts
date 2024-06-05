@@ -59,7 +59,7 @@ cursor:pointer;
 export const DocCardImg = styled.img`
     box-sizing:border-box;
     height:150px;
-    width:198px;
+    width:170px;
     
 `
 export const DocCardContent = styled.div`

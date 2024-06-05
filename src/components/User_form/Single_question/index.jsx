@@ -1,38 +1,40 @@
 import React, { useState, useEffect } from 'react'
-import { Form_check_input, Submit_, User_footer, User_form_questions, User_form_section, User_title_section, Form_check, User_form_submit, User_form_div } from '../style'
-import { Button, Typography } from '@mui/material'
+import { TextField_input, Form_check_input, Submit_, User_footer, User_form_questions, User_form_section, User_title_section, Form_check, User_form_submit, User_form_div } from '../style'
+import { Button, TextField, Typography } from '@mui/material'
 import uuid from 'react-uuid'
+import { validate } from '../../../validators/validator';
 export let tmp;
 export const Single_question = ({ quest, quest_number, answer }) => {
 
-    const [currentAnswer, setCurrent] = useState({ 'Number_Question': quest_number + 1, 'Question': quest.questionText, Number_Ans: [], Answer: [] })
-
+    const [currentAnswer, setCurrent] = useState({ 'Number_Question': quest_number + 1, 'Question': quest.questionText, Number_Ans: [], Answer: [], Required: quest.required })
+    const [error, setError] = useState(false)
     const [text, settext] = useState('')
     const unique_number = uuid()
+    answer[quest_number] = currentAnswer
 
-    const handle = async (e, optionText, option_number, QText, QNumber) => {
+    const handle = (e, optionText, option_number, QText, QNumber) => {
         const { type, name, value, checked } = e.target;
 
         if (type === 'checkbox') {
             setCurrent(prev => {
 
-                const updatedAnswer = checked ? { // Проверяем флажок
+                const updatedAnswer = checked ? {
                     ...prev,
                     Number_Question: QNumber,
                     Question: QText,
-                    Number_Ans: [...prev.Number_Ans, option_number], // Добавляем данные
+                    Number_Ans: [...prev.Number_Ans, option_number],
                     Answer: [...prev.Answer, optionText],
                 } : {
                     ...prev,
                     Number_Question: QNumber,
                     Question: quest.questionText,
-                    Number_Ans: prev.Number_Ans.filter(item => item !== option_number), // Фильтруем данные
+                    Number_Ans: prev.Number_Ans.filter(item => item !== option_number),
                     Answer: prev.Answer.filter(item => item !== optionText),
                 };
-                answer[quest_number] = updatedAnswer; // Обновляем answer
-                console.log(updatedAnswer); // Логируем актуальное состояние
+                answer[quest_number] = updatedAnswer;
+                console.log(updatedAnswer);
 
-                return updatedAnswer; // Возвращаем актуальное состояние
+                return updatedAnswer;
             });
 
 
@@ -51,41 +53,47 @@ export const Single_question = ({ quest, quest_number, answer }) => {
                 return updatedAnswer;
             });
         } else {
-            settext(value);
-            setCurrent(prev => {
-                const updatedAnswer = {
-                    ...prev,
-                    Answer: value,
-                    Number_Ans: '',
-                };
+            if (!validate(value)) {
+                setError(true)
+            }
+            else {
+                setError(false)
+                settext(value);
+                setCurrent(prev => {
+                    const updatedAnswer = {
+                        ...prev,
+                        Answer: value,
+                        Number_Ans: '',
+                    };
 
-                answer[quest_number] = updatedAnswer;
-                console.log(updatedAnswer);
+                    answer[quest_number] = updatedAnswer;
+                    console.log(updatedAnswer);
 
-                return updatedAnswer;
-            });
+                    return updatedAnswer;
+                });
+            }
+
         }
     }
 
     return (
         <User_form_questions>
             <Typography style={{ fontSize: '15px', fontWeight: '400', letterSpacing: '.1px', lineHeight: '24px', paddingBottom: '8px' }}>{quest_number + 1}. {quest.questionText}</Typography>
+            {quest.required ? <Typography style={{ fontSize: '12px', fontWeight: '400', letterSpacing: '.1px', lineHeight: '24px', paddingBottom: '8px', color: 'red' }}>Обязательный вопрос</Typography> : ''}
             {
                 quest.options.map((ques, index) => (
                     <div style={{ marginBottom: '5px' }}>
                         <div style={{ display: 'flex' }}>
                             <Form_check>
-                                <label>
+                                {quest.qustionType !== 'text' ? (<label>
                                     <Form_check_input
                                         type={quest.qustionType}
                                         name={unique_number}
-                                        value={text}
-
                                         required={ques.required}
                                         style={{ marginLeft: '5px', marginRight: '5px' }}
                                         onChange={(e) => { handle(e, ques.optionText, index + 1, quest.questionText, quest_number + 1) }}
                                     />{quest.qustionType === 'text' ? '' : ques.optionText}
-                                </label>
+                                </label>) : <TextField_input onChange={(e) => { handle(e, ques.optionText, index + 1, quest.questionText, quest_number + 1) }} color='success' error={error} value={text} variant="standard">ffff</TextField_input>}
                             </Form_check>
                         </div>
                     </div>

@@ -3,7 +3,6 @@ import CropOriginalIcon from '@mui/icons-material/CropOriginal';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import ShortTextIcon from '@mui/icons-material/ShortText';
 import SubjectIcon from '@mui/icons-material/Subject';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { BsFileText, BsTrash } from 'react-icons/bs'
 import FilterNoneIcon from '@mui/icons-material/FilterNone';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -14,21 +13,13 @@ import { FcRightUp } from "react-icons/fc"
 import CloseIcon from '@mui/icons-material/Close';
 import { useState, useEffect } from 'react';
 import { Add_footer, Add_question, Add_question_body, Add_question_bottom, Add_question_bottom_left, Add_question_top, MenuItem_, Points, Question, Question_FormDiv, Question_Form_top, Question_Form_top_desc, Question_Form_top_name, Question_boxes, Question_edit, Question_title_section, Save_form, Saved_question, Section, Select_, Text_input, Top_header, Option } from './style';
-import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
-import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux'
-import { ActionTypes } from '../../redux/store';
-import { useStateValue } from '../../redux/StateProvider';
-import { AddNewDoc, fetchDocsData } from '../../redux/Slice';
+import { AddNewDoc } from '../../redux/Slice';
 
 export const Question_Form = () => {
     const { id } = useParams()
     const dispatch = useDispatch()
-    const files = useSelector(state => state.questions.forms);
-    const updatequestions = { ...files }
-    //const [{ }, dispatch] = useStateValue()
-    //console.log(id)
     const [doc_name, setDoc_name] = useState()
     const [doc_desc, setDoc_desc] = useState()
     const [questions, setquestion] = useState(
@@ -41,9 +32,6 @@ export const Question_Form = () => {
                 { optionText: "4" },
 
             ],
-            //answer: false,
-            //answerKey: "",
-            //points: 0,
             open: true,
             required: false
         }]
@@ -57,58 +45,6 @@ export const Question_Form = () => {
                 setDoc_desc(data.doc_desc)
                 setquestion(data.questions)
             })
-        // if (updatequestions !== undefined) {
-        //     updatequestions.map((item, key) => {
-        //         if (item.doc_id === id) {
-        //             setDoc_desc(item.doc_desc)
-        //             setDoc_name(item.document_name)
-        //             setquestion(item.questions)
-        //         }
-        //     })
-        // }
-        // const updatequestions = files
-        // if (updatequestions !== undefined) {
-        //     updatequestions.map((item, key) => {
-        //         if (item.doc_id === id) {
-        //             setDoc_name(item.document_name)
-        //             setDoc_desc(item.doc_desc)
-        //             //const updatequestions = item.questions
-        //             setquestion(item.questions)
-
-        //             //console.log(updatequestions)
-        //         }
-
-        //     })
-        // }
-        // files !== undefined ? files.map((item, key) => {
-        //     setDoc_name(item.document_name)
-        //     setDoc_desc(item.doc_desc)
-        //     setquestion(item.questions)
-        // }) : ''
-        //files !==undefined ? files.map(item=>{})
-        // axios.get(`http://localhost:4444/get_data/${id}`)
-        //     .then(res => {
-        //         console.log(res.data)
-        //         setDoc_name(res.data.document_name)
-        //         setDoc_desc(res.data.doc_desc)
-        //         setquestion(res.data.questions)
-        //         // dispatch({
-        //         //     type: ActionTypes.SET_DOC_NAME,
-        //         //     doc_name: res.data.ques_data.document_name
-        //         // })
-        //         // dispatch({
-        //         //     type: ActionTypes.SET_DOC_DESC,
-        //         //     doc_desc: res.data.ques_data.document_desc
-        //         // })
-        //         // dispatch({
-        //         //     type: ActionTypes.SET_QUESTION,
-        //         //     questions: res.data.ques_data.questions
-        //         // })
-        //     })
-        //     .catch(err => {
-        //         console.log(err)
-        //         //alert('не удалось загрузить анкету')
-        //     })
     }, [])
 
 
@@ -202,27 +138,6 @@ export const Question_Form = () => {
             required: false
         }])
     }
-
-    // const onDragEnd = (result) => {
-    //     if (!result.destination) {
-    //         return
-    //     }
-    //     let quest = [...questions]
-    //     const item = reorder(
-    //         quest,
-    //         result.source.index,
-    //         result.destination.index
-    //     )
-    //     setquestion(item)
-    // }
-
-    // const reorder = (list, startIndex, endIndex) => {
-    //     const result = Array.from(list)
-    //     const [removed] = result.splice(startIndex, 1)
-    //     result.splice(endIndex, 0, removed)
-    //     return result
-    // }
-
     const expandCloseAll = () => {
         let question = [...questions]
         for (let i = 0; i < question.length; i++) {
@@ -232,14 +147,8 @@ export const Question_Form = () => {
     }
 
     const comittoDB = () => {
-        //console.log(questions)
-        // dispatch({
-        //     type: ActionTypes.SET_QUESTION,
-        //     questions: questions
-        // })
         dispatch(AddNewDoc({ id, doc_name, doc_desc, questions }))
         console.log(questions)
-        //console.log(id, doc_name, doc_desc, questions)
     }
 
     const handleExpand = (i) => {

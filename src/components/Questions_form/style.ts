@@ -2,7 +2,7 @@ import { AccordionDetails, MenuItem, Select } from "@mui/material"
 import styled from "styled-components"
 
 export const Question_FormDiv = styled.div`
-    background-color:#f4f4f9;
+background-color:rgb(203,255,198);
     height:100%;
     padding-bottom:30px;
 `
@@ -14,7 +14,7 @@ export const Question_title_section = styled.div`
 `
 export const Question_Form_top = styled.div`
     background-color:white;
-    border-top:8px solid rgb(103,58,183);
+    border-top:8px solid green;
     border-radius:8px;
     padding:30px 25px;
     text-transform:capitalize;

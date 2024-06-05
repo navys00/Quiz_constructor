@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom";
 import { Home } from './pages/Home';
 import { Form } from './pages/Form';
 import { User_form } from './components/User_form';
+import { Suggested } from './components/Suggested';
 function App() {
   return (
     <div className="App">
@@ -15,6 +16,7 @@ function App() {
         <Route path='/' element={<Home />} />
         <Route path='/form/:id' element={<Form />} />
         <Route path='/response/:id' element={<User_form />} />
+        <Route path='/suggested' element={<Suggested />} />
       </Routes>
 
     </div>

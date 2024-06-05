@@ -1,19 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Typography } from '@mui/material'
-import FormControlLabel from '@mui/material'
-import Radio from '@mui/material'
 import { useNavigate, useParams } from 'react-router-dom'
-import { useStateValue } from '../../redux/StateProvider'
-import { useSelector, useDispatch } from 'react-redux'
-import axios from 'axios'
-import { Form_check_input, Submit_, User_footer, User_form_questions, User_form_section, User_title_section, Form_check, User_form_submit, User_form_div } from './style'
+import { useDispatch } from 'react-redux'
+import { User_form_section, User_title_section, Form_check, User_form_submit, User_form_div } from './style'
 import { Single_question } from './Single_question'
-import { tmp } from './Single_question'
 import { AddNewAnswers } from '../../redux/Slice'
 import uuid from 'react-uuid'
 export const User_form = () => {
-    const quest = []
-    const post_answer = []
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { id } = useParams()
@@ -49,81 +42,35 @@ export const User_form = () => {
     }, [])
 
     const submit = () => {
+        answers.map((item) => {
+            console.log(item)
+        })
         dispatch(AddNewAnswers({ id, answer_id, doc_name, answers }))
+        navigate("/suggested", { replace: true })
     }
-
+    // answers.map((item) => (
+    //     (item.Required === true && (item.Answer.length === 0 || item.Answer === '')) ?
+    //         setansErr(true) : setansErr(false)
+    // ))
     return (
-        <Submit_>
-            <User_form_div>
-                <User_form_section>
-                    <User_title_section>
-                        <Typography style={{ fontSize: '26px' }}>{doc_name}</Typography>
-                        <Typography style={{ fontSize: '15px' }}>{doc_desc}</Typography>
-                    </User_title_section>
-                    {
-                        questions.map((question, qindex) => (
-                            <Single_question quest={question} quest_number={qindex} answer={answers} />
-                            // <User_form_questions>
-                            //     <Typography style={{ fontSize: '15px', fontWeight: '400', letterSpacing: '.1px', lineHeight: '24px', paddingBottom: '8px' }}>{qindex + 1}. {question.questionText}</Typography>
-                            //     {
-                            //         question.options.map((ques, index) => (
-                            //             <div key={index} style={{ marginBottom: '5px' }}>
-                            //                 <div style={{ display: 'flex' }}>
-                            //                     <Form_check>
-                            //                         {
-                            //                             question.qustionType === 'radio' ? (
-                            //                                 <label>
-                            //                                     <Form_check_input
-                            //                                         type={'radio'}
-                            //                                         name={qindex}
-                            //                                         value={ques.optionText}
-                            //                                         required={question.required}
-                            //                                         style={{ marginLeft: '5px', marginRight: '5px' }}
-                            //                                         onChange={(e) => { selectCheck(e.target.checked, question.questionText, ques.optionText) }}
-                            //                                     />{ques.optionText}
-                            //                                 </label>) :
-                            //                                 question.qustionType === 'text' ? (
-                            //                                     <label>
 
-                            //                                         <Form_check_input
-                            //                                             type={'text'}
-                            //                                             name={qindex}
-                            //                                             value={''}
-                            //                                             required={question.required}
-                            //                                             style={{ marginLeft: '5px', marginRight: '5px' }}
-                            //                                             onChange={(e) => { selectinput(question.questionText, e.target.value) }}
-                            //                                         />
+        <User_form_div>
+            <User_form_section>
+                <User_title_section>
+                    <Typography style={{ fontSize: '26px' }}>{doc_name}</Typography>
+                    <Typography style={{ fontSize: '15px' }}>{doc_desc}</Typography>
+                </User_title_section>
+                {
+                    questions.map((question, qindex) => (
+                        <Single_question quest={question} quest_number={qindex} answer={answers} />
+                    ))
+                }
+                <User_form_submit>
+                    <Button variant='contained' onClick={submit} style={{ fontSize: '14px', backgroundColor: 'green' }}>Submit</Button>
+                </User_form_submit>
 
-                            //                                     </label>
-                            //                                 ) :
-                            //                                     (
-                            //                                         <label>
-                            //                                             <Form_check_input
-                            //                                                 type={question.qustionType}
-                            //                                                 name={qindex}
-                            //                                                 value={ques.optionText}
-                            //                                                 required={question.required}
-                            //                                                 style={{ marginLeft: '5px', marginRight: '5px' }}
-                            //                                                 onChange={() => { select(question.questionText, ques.optionText) }}
-                            //                                             />{ques.optionText}
-                            //                                         </label>
-                            //                                     )
+            </User_form_section>
+        </User_form_div>
 
-                            //                         }
-                            //                     </Form_check>
-                            //                 </div>
-                            //             </div>
-                            //         ))
-                            //     }
-                            // </User_form_questions>
-                        ))
-                    }
-                    <User_form_submit>
-                        <Button variant='contained' color='primary' onClick={submit} style={{ fontSize: '14px' }}>Submit</Button>
-                    </User_form_submit>
-
-                </User_form_section>
-            </User_form_div>
-        </Submit_>
     )
 }

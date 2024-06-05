@@ -1,11 +1,13 @@
-import express from 'express'
-import * as fs from 'fs'
-import cors from "cors"
-import * as path from 'path'
-import * as excel from "exceljs"
-import * as client from 'pg'
-import * as dotenv from 'dotenv'
+// import express from 'express'
+// import * as fs from 'fs'
+// import cors from "cors"
+// import * as path from 'path'
 
+const cors = require('cors')
+const fs = require('fs')
+const express = require('express')
+const path = require('path')
+const Pool = require('pg').Pool
 const app = express()
 app.use(cors())
 app.use(express.json())
@@ -43,7 +45,6 @@ app.post("/post_questions/:doc_id", (req, res) => {
 app.post("/student_response/:doc_id", (req, res) => {
 
     let data = JSON.stringify(req.body)
-    //console.log(data)
     try {
         if (fs.existsSync(`./answers/${req.params.doc_id}.json`)) {
             fs.openSync(`./answers/${req.params.doc_id}.json`, 'w+')
@@ -70,24 +71,11 @@ app.get("/get_data/:doc_id", (req, res) => {
     catch (err) {
         console.log(err)
     }
-    // let doc_id = path.parse(req.params.doc_id).name
-    // let data = JSON.parse(fs.readFileSync(`./files/${doc_id}.json`, 'utf8'))
-    // fs.readFileSync(`./files/${doc_id}.json`, (err, data) => {
-    //     try {
 
-    //         let ques_data = JSON.parse(data)
-    //         //console.log(ques_data)
-    //         res.send({ message: 'success', ques_data })
-    //     }
-    //     catch (err) {
-    //         console.log(err)
-    //     }
-    // })
 })
 
 app.get('/get_all_filenames', (req, res) => {
     const directoryPath = './files'
-    //res.setHeader('Content-Type', 'application/json');
     fs.readdir(directoryPath, function (err, files) {
         try {
             const data = [];
@@ -100,7 +88,6 @@ app.get('/get_all_filenames', (req, res) => {
                 obj.doc_name = fileData.document_name
                 obj.doc_name = fileData.doc_desc
                 data.push(fileData)
-                //console.log(fileData)
             });
             res.send(data)
 
@@ -109,12 +96,9 @@ app.get('/get_all_filenames', (req, res) => {
             console.log(err)
         }
     })
-    //res.send({ message: 'success' })
 })
 
 app.delete('/get_all_filenames/:id', (req, res) => {
-    //let doc_id = path.parse(req.params.doc_id).name
-    //res.setHeader('Content-Type', 'application/json');
     console.log(req.params)
     let filePath = `./files/${req.params.id}.json`
     fs.unlink(filePath, (err) => {
@@ -126,32 +110,48 @@ app.delete('/get_all_filenames/:id', (req, res) => {
         console.log('Файл успешно удален');
     });
     res.send({ msg: 'success' })
-    // fs.readdir(directoryPath, function (err, files) {
-    //     try {
 
-    //         //const data = [];
-    //         // files.forEach(file => {
-    //         //     if (req.params.id === path.parse(file).name) {
-    //         //         let filePath = `./files/${req.params.id}.json`
-    //         //         fs.unlink(filePath, (err) = {
-    //         //             if(err) {
-    //         //                 return console.log(err)
-    //         //             }
-
-    //         //         })
-    //         //         res.send({ msg: 'success' })
-    //         //     }
-    //         // });
-
-
-    //     }
-    //     catch (err) {
-    //         console.log(err)
-    //     }
-
-    //res.send({ message: 'success' })
 })
 
+const pool = new Pool({
+    user: 'postgres',
+    host: 'localhost',
+    database: 'postgres',
+    password: '1234',
+    port: '5432'
+
+})
+const testConnection = async () => {
+    const client = await pool.connect();
+    try {
+        const res = await client.query('SELECT NOW()');
+        console.log('Результат:', res.rows);
+    } catch (err) {
+        console.error('Ошибка при выполнении запроса', err);
+    } finally {
+        client.release();
+        await pool.end();
+    }
+};
+
+testConnection();
+// const connect = pool.connect()
+// try {
+//     const res = await client.query('SELECT NOW()');
+//     console.log('Результат:', res.rows);
+// } catch (err) {
+//     console.error('Ошибка при выполнении запроса', err);
+// } finally {
+//     client.release();
+//     await pool.end();
+// }
+// pool.query('SELECT NOW()', (err, res) => {
+//     if (err) {
+//         console.error('Ошибка при выполнении запроса', err);
+//     }
+//     console.log('Результат:', res.rows);
+//     pool.end();
+// });
 
 app.listen(4444, (err) => {
     if (err) {
