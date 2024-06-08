@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import { TextField_input, Form_check_input, Submit_, User_footer, User_form_questions, User_form_section, User_title_section, Form_check, User_form_submit, User_form_div } from '../style'
-import { Button, TextField, Typography } from '@mui/material'
+import React, { useState } from 'react'
+import { TextField_input, Form_check_input, Submit_, User_footer, User_form_questions, User_form_section, User_title_section, Form_check } from '../style'
+import { Typography } from '@mui/material'
 import uuid from 'react-uuid'
 import { validate } from '../../../validators/validator';
 export let tmp;
 export const Single_question = ({ quest, quest_number, answer }) => {
 
-    const [currentAnswer, setCurrent] = useState({ 'Number_Question': quest_number + 1, 'Question': quest.questionText, Number_Ans: [], Answer: [], Required: quest.required })
+    const [currentAnswer, setCurrent] = useState({ 'Number_Question': quest_number + 1, 'Question': quest.questionText, 'Number_Ans': [], 'Answer': [], 'Required': quest.required })
     const [error, setError] = useState(false)
     const [text, settext] = useState('')
     const unique_number = uuid()
@@ -24,12 +24,14 @@ export const Single_question = ({ quest, quest_number, answer }) => {
                     Question: QText,
                     Number_Ans: [...prev.Number_Ans, option_number],
                     Answer: [...prev.Answer, optionText],
+                    Required: quest.required
                 } : {
                     ...prev,
                     Number_Question: QNumber,
                     Question: quest.questionText,
                     Number_Ans: prev.Number_Ans.filter(item => item !== option_number),
                     Answer: prev.Answer.filter(item => item !== optionText),
+                    Required: quest.required
                 };
                 answer[quest_number] = updatedAnswer;
                 console.log(updatedAnswer);
@@ -45,6 +47,7 @@ export const Single_question = ({ quest, quest_number, answer }) => {
                     ...prev,
                     Answer: optionText,
                     Number_Ans: option_number,
+                    Required: quest.required
                 };
 
                 answer[quest_number] = updatedAnswer;
@@ -64,10 +67,11 @@ export const Single_question = ({ quest, quest_number, answer }) => {
                         ...prev,
                         Answer: value,
                         Number_Ans: '',
+                        Required: quest.required
                     };
 
                     answer[quest_number] = updatedAnswer;
-                    console.log(updatedAnswer);
+                    //console.log(updatedAnswer);
 
                     return updatedAnswer;
                 });

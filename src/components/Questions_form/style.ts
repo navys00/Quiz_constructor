@@ -2,9 +2,13 @@ import { AccordionDetails, MenuItem, Select } from "@mui/material"
 import styled from "styled-components"
 
 export const Question_FormDiv = styled.div`
-background-color:rgb(203,255,198);
-    height:100%;
     padding-bottom:30px;
+    background-color:rgb(203,255,198);
+`
+
+export const Background = styled.div`
+background-color:rgb(203,255,198);
+height:100vh;
 `
 export const Section = styled.div`
     margin:auto;
@@ -153,8 +157,9 @@ export const Text_input = styled.input`
 `
 
 export const Add_footer = styled.div`
-    display:flex;
-    justify-content:space-between;
+    width:100%;
+    
+
 `
 export const Add_question_bottom = styled.div`
 margin-top:12px;
@@ -180,7 +185,8 @@ export const Question_edit = styled.div`
     margin-bottom:0;
     padding:1px;
     border-radius:3px;
-    height:150px;
+    height:35px;
+    justify-content:center;
     width:35px;
 
 `

@@ -20,30 +20,14 @@ export const MainBody = () => {
     const DeleteClick = (e, id) => {
         e.stopPropagation()
         dispatch(DeleteDoc(id))
-        // await axios.delete(`http://localhost:4444/get_all_filenames/${id}`, {
-        //     "id": id
-        // })
-        // files.filter(item => item !== id);
+
     }
     var files = useSelector(state => state.questions.forms);
 
     useEffect(() => {
         dispatch(fetchDocs())
-        //console.log(fetchQuestions())
-        // axios.get('http://localhost:4444/get_all_filenames')
-        //     .then(async res => {
-        //         const array = await res.data
-        //         setFiles(array)
-        //     })
-        //     .catch(err => {
-        //         console.warn(err)
-        //         alert('ошибка при получении данных')
-        //     })
+
     }, [files])
-    //console.log(files)
-    // const handleClick = (event) => {
-    //     event.stopPropagation()
-    // }
 
 
     return (
@@ -72,7 +56,7 @@ export const MainBody = () => {
                         </DocCard>
                         <DocCardContent>
                             <Storage style={{ backgroundColor: 'green' }}></Storage>
-                            <span>{item.document_name}</span>
+                            <span style={{ width: '120px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} >{item.document_name}</span>
                             <IconButton onClick={(e) => { e.stopPropagation(); Setopen(!open) }}>
                                 <MoreVert />
                             </IconButton>
@@ -90,5 +74,3 @@ export const MainBody = () => {
         </Main_Body>
     )
 }
-
-//onClick={()=>{`/form/${id}`}}

@@ -1,29 +1,28 @@
 import React from 'react'
-import CropOriginalIcon from '@mui/icons-material/CropOriginal';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import ShortTextIcon from '@mui/icons-material/ShortText';
 import SubjectIcon from '@mui/icons-material/Subject';
 import { BsFileText, BsTrash } from 'react-icons/bs'
 import FilterNoneIcon from '@mui/icons-material/FilterNone';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import TextFieldsIcon from '@mui/icons-material/TextFields';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import { Accordion, AccordionSummary, Switch, Select, AccordionDetails, Button, IconButton, Typography, FormControlLabel, MenuItem, FormControl } from '@mui/material';
-import { FcRightUp } from "react-icons/fc"
+import { Accordion, AccordionSummary, Switch, Select, AccordionDetails, Button, IconButton, Typography, FormControlLabel, } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState, useEffect } from 'react';
-import { Add_footer, Add_question, Add_question_body, Add_question_bottom, Add_question_bottom_left, Add_question_top, MenuItem_, Points, Question, Question_FormDiv, Question_Form_top, Question_Form_top_desc, Question_Form_top_name, Question_boxes, Question_edit, Question_title_section, Save_form, Saved_question, Section, Select_, Text_input, Top_header, Option } from './style';
+import { Add_footer, Add_question, Add_question_body, Add_question_bottom, Add_question_top, MenuItem_, Question, Question_FormDiv, Question_Form_top, Question_Form_top_desc, Question_Form_top_name, Question_boxes, Question_edit, Question_title_section, Save_form, Saved_question, Section, Select_, Top_header, Option, Background } from './style';
 import { useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { AddNewDoc } from '../../redux/Slice';
 
 export const Question_Form = () => {
     const { id } = useParams()
+    let flag = true
     const dispatch = useDispatch()
     const [doc_name, setDoc_name] = useState()
     const [doc_desc, setDoc_desc] = useState()
     const [questions, setquestion] = useState(
         [{
+            year: 2024,
             questionText: "what is 2+2",
             qustionType: "radio",
             options: [
@@ -128,6 +127,8 @@ export const Question_Form = () => {
         const reqQuestion = [...questions]
         reqQuestion[i].required = !reqQuestion[i].required
         setquestion(reqQuestion)
+        console.log(reqQuestion[i].required)
+
     }
     const AddNewQuestion = () => {
         expandCloseAll()
@@ -147,8 +148,9 @@ export const Question_Form = () => {
     }
 
     const comittoDB = () => {
+        flag = false;
         dispatch(AddNewDoc({ id, doc_name, doc_desc, questions }))
-        console.log(questions)
+        //console.log(questions)
     }
 
     const handleExpand = (i) => {
@@ -250,12 +252,6 @@ export const Question_Form = () => {
 
 
                             <Add_footer>
-                                <Add_question_bottom_left>
-                                    <Button onClick={() => { AddAnswer(index) }} size='small' style={{ textTransform: 'none', color: '#4285f4', fontSize: '13px', fontWeight: '600' }}>
-                                        <FcRightUp style={{ border: '2px solid #4285f4', padding: '2px', marginRight: '8px' }} />
-                                        Answer key
-                                    </Button>
-                                </Add_question_bottom_left>
                                 <Add_question_bottom>
                                     <IconButton onClick={() => { copyQuestion(index) }} aria-label='copy'>
                                         <FilterNoneIcon />
@@ -297,25 +293,11 @@ export const Question_Form = () => {
                                     </div>
                                 </Add_question_body>
                             ))}
-                            <Add_question_body >
-                                <Button size='small' style={{ textTransform: 'none', color: '#4285f4', fontSize: '13px', fontWeight: '600' }}>
-                                    <BsFileText style={{ fontSize: '20px', marginRight: '8px' }} />
-                                    Add answer feedback
-                                </Button>
-                            </Add_question_body>
-                            <Add_question_bottom>
-                                <Button onClick={() => { doneAnswer(index) }} variant='outlined' color='primary' style={{ textTransform: 'none', color: '#4285f4', fontSize: '12px', fontWeight: '600' }}>
-                                    Done
-                                </Button>
-                            </Add_question_bottom>
                         </Add_question>
                     )}
 
                     {!ques.answer ? (<Question_edit>
                         <AddCircleOutlineIcon onClick={AddNewQuestion} style={{ cursor: 'pointer', padding: '8px 5px', color: '#5f6368' }} />
-                        {/* <OndemandVideoIcon/> */}
-                        <CropOriginalIcon style={{ padding: '8px 5px', color: '#5f6368' }} />
-                        <TextFieldsIcon style={{ padding: '8px 5px', color: '#5f6368' }} />
                     </Question_edit>) : ''}
                 </Question_boxes>
 
@@ -326,22 +308,24 @@ export const Question_Form = () => {
     }
     return (
         <>
-            <Question_FormDiv>
-                <br></br>
-                <Section>
-                    <Question_title_section>
-                        <Question_Form_top>
-                            <Question_Form_top_name type='text' placeholder='Untitled document' value={doc_name} onChange={(e) => { setDoc_name(e.target.value) }} />
-                            <Question_Form_top_desc type='text' placeholder='Add description' value={doc_desc} onChange={(e) => { setDoc_desc(e.target.value) }} />
-                        </Question_Form_top>
-                    </Question_title_section>
+            <Background>
+                <Question_FormDiv>
+                    <br></br>
+                    <Section>
+                        <Question_title_section>
+                            <Question_Form_top>
+                                <Question_Form_top_name type='text' placeholder='Untitled document' value={doc_name} onChange={(e) => { setDoc_name(e.target.value) }} />
+                                <Question_Form_top_desc type='text' placeholder='Add description' value={doc_desc} onChange={(e) => { setDoc_desc(e.target.value) }} />
+                            </Question_Form_top>
+                        </Question_title_section>
 
-                    {questionUI()}
-                    <Save_form>
-                        <Button variant='contained' color='primary' onClick={comittoDB}>Save</Button>
-                    </Save_form>
-                </Section>
-            </Question_FormDiv>
+                        {questionUI()}
+                        <Save_form>
+                            <Button variant='contained' color='success' onClick={comittoDB}>Save</Button>
+                        </Save_form>
+                    </Section>
+                </Question_FormDiv>
+            </Background>
         </>
     )
 }

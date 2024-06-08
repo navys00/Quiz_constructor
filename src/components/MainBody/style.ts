@@ -66,6 +66,7 @@ export const DocCardContent = styled.div`
     display:flex;
     width:100%;
     justify-content:space-between;
+    
     align-items:center;
     flex-direction:row;
 `

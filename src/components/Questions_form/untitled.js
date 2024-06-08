@@ -323,3 +323,37 @@
                                     />{ques.optionText}
                                 </label>
                             )
+
+
+
+
+
+
+
+
+                            try {
+                                if (fs.existsSync(`./answers/${req.params.doc_id}.json`)) {
+                                    fs.openSync(`./answers/${req.params.doc_id}.json`, 'w+')
+                                    fs.writeFileSync(`./answers/${req.params.doc_id}.json`, data)
+                                    fs.readFile(`./files/${req.params.doc_id}.json`, 'utf-8', (err, data) => {
+                                        try {
+                                            const jsonData = JSON.parse(data);
+                                            const text = 'INSERT INTO answers_table(answer_id, doc_id, doc_name, answers) VALUES($1, $2, $3, $4) RETURNING *';
+                                            const values = [jsonData.Answer_id, jsonData.doc_id, jsonData.document_name, JSON.stringify(jsonData.questions)];
+                                            pool.query(text, values, (err, res) => {
+                                                if (err) {
+                                                    console.error('Error executing query', err);
+                                                } else {
+                                                    console.log('Data inserted successfully:', res.rows[0]);
+                                                }
+                        
+                                                pool.end();
+                                            });
+                                        }
+                                        catch (err) {
+                                            console.log(err)
+                                        }
+                                    })
+                                }
+                                res.send({ message: 'success' })
+                            }

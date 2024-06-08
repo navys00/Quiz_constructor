@@ -6,6 +6,7 @@ import { User_form_section, User_title_section, Form_check, User_form_submit, Us
 import { Single_question } from './Single_question'
 import { AddNewAnswers } from '../../redux/Slice'
 import uuid from 'react-uuid'
+import { Background } from '../Questions_form/style'
 export const User_form = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -24,8 +25,8 @@ export const User_form = () => {
                 { optionText: "4" },
 
             ],
-            open: true,
-            required: false
+            open: null,
+            required: null
         }]
     )
 
@@ -36,41 +37,40 @@ export const User_form = () => {
                 const data = await res.json()
                 setDoc_name(data.document_name)
                 setDoc_desc(data.doc_desc)
-                setquestion(data.questions)
+                setquestion(data.questions || [])
             })
 
     }, [])
 
     const submit = () => {
-        answers.map((item) => {
-            console.log(item)
-        })
-        dispatch(AddNewAnswers({ id, answer_id, doc_name, answers }))
-        navigate("/suggested", { replace: true })
+        answers.map((item) => (
+            item.Required === true && (item.Answer === "") ?
+                console.log(item) : ''
+        ))
+
+        // dispatch(AddNewAnswers({ id, answer_id, doc_name, answers }))
+        // navigate("/suggested", { replace: true })
     }
-    // answers.map((item) => (
-    //     (item.Required === true && (item.Answer.length === 0 || item.Answer === '')) ?
-    //         setansErr(true) : setansErr(false)
-    // ))
+
     return (
+        <Background>
+            <User_form_div>
+                <User_form_section>
+                    <User_title_section>
+                        <Typography style={{ fontSize: '26px' }}>{doc_name}</Typography>
+                        <Typography style={{ fontSize: '15px' }}>{doc_desc}</Typography>
+                    </User_title_section>
+                    {
+                        questions.map((question, qindex) => (
+                            <Single_question quest={question} quest_number={qindex} answer={answers} />
+                        ))
+                    }
+                    <User_form_submit>
+                        <Button variant='contained' onClick={submit} style={{ fontSize: '14px', backgroundColor: 'green' }}>Submit</Button>
+                    </User_form_submit>
 
-        <User_form_div>
-            <User_form_section>
-                <User_title_section>
-                    <Typography style={{ fontSize: '26px' }}>{doc_name}</Typography>
-                    <Typography style={{ fontSize: '15px' }}>{doc_desc}</Typography>
-                </User_title_section>
-                {
-                    questions.map((question, qindex) => (
-                        <Single_question quest={question} quest_number={qindex} answer={answers} />
-                    ))
-                }
-                <User_form_submit>
-                    <Button variant='contained' onClick={submit} style={{ fontSize: '14px', backgroundColor: 'green' }}>Submit</Button>
-                </User_form_submit>
-
-            </User_form_section>
-        </User_form_div>
-
+                </User_form_section>
+            </User_form_div>
+        </Background>
     )
 }

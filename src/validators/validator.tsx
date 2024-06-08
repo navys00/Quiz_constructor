@@ -1,8 +1,8 @@
-import { alphabeticSymbolRegExp } from './validationExpression'
+import { RegExp } from './validationExpression'
 
 export function validate(email: string) {
-    if (email.match(alphabeticSymbolRegExp)) {
-        return true;
+    if (email.match(RegExp)) {
+        return false;
     }
-    return false;
+    return true;
 }

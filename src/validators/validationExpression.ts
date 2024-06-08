@@ -1,1 +1,1 @@
-export const alphabeticSymbolRegExp = /^[0-9\s]+$/;
+export const RegExp = /^[А-Яа-яA-Za-z]+$/;

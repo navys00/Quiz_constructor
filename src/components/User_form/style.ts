@@ -8,7 +8,6 @@ interface IProps {
 export const User_form_div = styled.div`
     background-color:rgb(203,255,198);
     display:flex;
-    height:100%;
     padding:20px;
 `
 export const User_form_section = styled.div`

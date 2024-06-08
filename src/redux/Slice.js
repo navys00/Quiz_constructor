@@ -20,24 +20,24 @@ export const fetchDocs = createAsyncThunk(
 );
 
 
-export const fetchDocsData = createAsyncThunk(
-    'questions/fetchDocsData',
-    async function (id, { rejectWithValue }) {
-        try {
-            const response = await fetch(`http://localhost:4444/get_data/${id}`);
+// export const fetchDocsData = createAsyncThunk(
+//     'questions/fetchDocsData',
+//     async function (id, { rejectWithValue }) {
+//         try {
+//             const response = await fetch(`http://localhost:4444/get_data/${id}`);
 
-            if (!response.ok) {
-                throw new Error('Server Error!');
-            }
+//             if (!response.ok) {
+//                 throw new Error('Server Error!');
+//             }
 
-            const data = await response.json();
-            //console.log(data)
-            return data;
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
-    }
-);
+//             const data = await response.json();
+//             //console.log(data)
+//             return data;
+//         } catch (error) {
+//             return rejectWithValue(error.message);
+//         }
+//     }
+// );
 
 
 export const DeleteDoc = createAsyncThunk(
@@ -134,27 +134,6 @@ export const addNewQuestion = createAsyncThunk(
 
 )
 
-export const fetchTodos = createAsyncThunk(
-    'questions/fetchTodos',
-    async function (_, { rejectWithValue }) {
-        try {
-            const response = await fetch('https://jsonplaceholder.typicode.com/todos?_limit=10');
-
-            if (!response.ok) {
-                throw new Error('Server Error!');
-            }
-
-            const data = await response.json();
-
-            return data;
-        } catch (error) {
-            return rejectWithValue(error.message);
-        }
-    }
-);
-export const initialState = {
-
-}
 
 const questionSlice = createSlice({
     name: 'questions',
