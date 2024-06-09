@@ -6,7 +6,7 @@ interface IProps {
 }
 
 export const User_form_div = styled.div`
-    background-color:rgb(203,255,198);
+    background-color:rgb(208,248,249);
     display:flex;
     padding:20px;
 `
@@ -15,13 +15,13 @@ export const User_form_section = styled.div`
     width:44%;
     display:flex;
     flex-direction:column;
+    justify-content:center;
 `
 export const User_title_section = styled.div`
     background-color:white;
-    border-top:8px solid green;
+    border-top:8px solid #0072bc;
     border-radius:8px;
     padding:15px 25px;
-    text-transform:capitalize;
     margin-bottom:8px;
 `
 export const User_form_questions = styled.div<IProps>`

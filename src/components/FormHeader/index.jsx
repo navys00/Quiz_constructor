@@ -7,29 +7,19 @@ import ColorLensIcon from '@mui/icons-material/ColorLens';
 import { useParams } from 'react-router-dom'
 import { Form_header, Form_header_left, Form_name, Form_header_Right } from './style'
 
-export const FormHeader = () => {
+export const FormHeader = ({ flag, setflag }) => {
     const navigate = useNavigate()
     const { id } = useParams()
     //console.log(id)
     //const [{ doc_name }, dispatch] = useStateValue()
     return (
         <Form_header>
-            <Form_header_left>
-                <Form_name type='text' placeholder='Untitled form' ></Form_name>
-
-                <FiStar style={{ marginRight: '10px' }} />
-                <span style={{ fontSize: '12px', fontWeight: '600' }}>All changes saved</span>
-            </Form_header_left>
             <Form_header_Right>
                 <IconButton>
                     <ColorLensIcon size="small" />
                 </IconButton>
-                <IconButton onClick={() => { navigate(`/response/${id}`) }}>
-
+                <IconButton disabled={flag} onClick={() => { navigate(`/response/${id}`) }}>
                     <AiOutlineEye />
-                </IconButton>
-                <IconButton>
-                    <FiSettings />
                 </IconButton>
             </Form_header_Right>
         </Form_header>

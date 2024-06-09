@@ -1,21 +1,22 @@
-import React from 'react'
-import { Search, HeaderDiv, Info, Right, Icon, SearchDiv } from './style'
+import React, { useState } from 'react'
+import { Search, HeaderDiv, Logo, Right, SearchDiv } from './style'
 import SummarizeIcon from '@mui/icons-material/Summarize';
 import { IconButton } from '@mui/material';
 import AppsIcon from '@mui/icons-material/Apps';
-export const Header = () => {
+import logo from '../../images/logo.png'
+export const Header = ({ searchValue, handleChangeValue }: any) => {
+
 
     return (
         <HeaderDiv>
-            <Info>
-                <IconButton> <Icon /></IconButton>
-            </Info>
+            <Logo>
+                <img src={logo}></img>
+            </Logo>
             <SearchDiv>
-                <Search />
-                <input placeholder='введите запрос' type='text'></input>
+                <input value={searchValue} onChange={handleChangeValue} style={{ height: '30px', borderRadius: '16px', border: '0px solid' }} placeholder='введите запрос' type='text'></input>
             </SearchDiv>
             <Right>
-                <IconButton> <AppsIcon /></IconButton>
+
             </Right>
 
         </HeaderDiv>

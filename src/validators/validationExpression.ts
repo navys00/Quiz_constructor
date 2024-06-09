@@ -1,1 +1,1 @@
-export const RegExp = /^[А-Яа-яA-Za-z]+$/;
+export const RegExp = /[А-Яа-яA-Za-z]+$/;

@@ -1,13 +1,17 @@
-import { AccordionDetails, MenuItem, Select } from "@mui/material"
+import { AccordionDetails, MenuItem, Select, TextField } from "@mui/material"
 import styled from "styled-components"
+
+interface IProps {
+    Error: boolean,
+}
 
 export const Question_FormDiv = styled.div`
     padding-bottom:30px;
-    background-color:rgb(203,255,198);
+    background-color:rgb(208,248,249);
 `
 
 export const Background = styled.div`
-background-color:rgb(203,255,198);
+background-color:rgb(208,248,249);
 height:100vh;
 `
 export const Section = styled.div`
@@ -18,18 +22,18 @@ export const Question_title_section = styled.div`
 `
 export const Question_Form_top = styled.div`
     background-color:white;
-    border-top:8px solid green;
+    border-top:8px solid #0072bc;
     border-radius:8px;
     padding:30px 25px;
     text-transform:capitalize;
 `
 
-export const Question_Form_top_name = styled.input`
+export const Question_Form_top_name = styled.input<IProps>`
     color:black;
     height:35px;
     border-bottom:1px solid #f4f4f9;
     outline:none;
-    border:none;
+    border:${props => (props.Error ? '2px solid red' : 'none')};
     width:100%;
     line-height:135%;
     line-height:40px;
@@ -38,7 +42,7 @@ export const Question_Form_top_name = styled.input`
     font-family:Google Sans, Roboto,Arial, sans-serif;
     box-sizing:border-box;
 `
-export const Question_Form_top_desc = styled.input`
+export const Question_Form_top_desc = styled.input<IProps>`
 box-sizing:border-box;
 margin-top:10px;
 font-family:Google Sans, Roboto,Arial, sans-serif;
@@ -46,7 +50,7 @@ font-size:13px;
 font-weight:400;
 line-height:40px;
 width:100%;
-border:none;
+border:${props => (props.Error ? '2px solid red' : 'none')};
 outline:none;
 border-bottom:1px solid #f4f4f9;
 color:black;
@@ -115,14 +119,11 @@ export const Question = styled.input`
 export const Option = styled.input`
 border:0;
 width:100%;
-    &:focus{
-        border-bottom:1px solid rgb(103,58,183);
-        background-color:#f4f4f9;
-    }
-    &:hover{
-        border-bottom:1px solid rgb(103,58,183);
-        background-color:#f4f4f9;
-    }
+
+`
+export const Option2 = styled(TextField)`
+border:0;
+width:100%;
 `
 
 export const Select_ = styled(Select)`
@@ -212,4 +213,8 @@ padding:4px;
 
 export const Save_form = styled.div`
 font-size:14px;
+display:flex;
+flex-direction:row;
+margin:8px 0px 0px 0px;
+justify-content:space-between;
 `

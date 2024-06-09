@@ -6,7 +6,7 @@ import { validate } from '../../../validators/validator';
 export let tmp;
 export const Single_question = ({ quest, quest_number, answer }) => {
 
-    const [currentAnswer, setCurrent] = useState({ 'Number_Question': quest_number + 1, 'Question': quest.questionText, 'Number_Ans': [], 'Answer': [], 'Required': quest.required })
+    const [currentAnswer, setCurrent] = useState({ 'Number_Question': quest_number + 1, 'Question': quest.questionText, 'Number_Ans': [], 'Answer': [], 'Required': quest.required, Err: true })
     const [error, setError] = useState(false)
     const [text, settext] = useState('')
     const unique_number = uuid()
@@ -33,6 +33,15 @@ export const Single_question = ({ quest, quest_number, answer }) => {
                     Answer: prev.Answer.filter(item => item !== optionText),
                     Required: quest.required
                 };
+                if (updatedAnswer.Answer.length === 0 && updatedAnswer.Required === true) {
+                    updatedAnswer.Err = true
+                    setError(true)
+
+                }
+                else {
+                    updatedAnswer.Err = false
+                    setError(false)
+                }
                 answer[quest_number] = updatedAnswer;
                 console.log(updatedAnswer);
 
@@ -47,9 +56,16 @@ export const Single_question = ({ quest, quest_number, answer }) => {
                     ...prev,
                     Answer: optionText,
                     Number_Ans: option_number,
-                    Required: quest.required
+                    Required: quest.required,
                 };
-
+                if (updatedAnswer.Answer.length === 0 && updatedAnswer.Required === true) {
+                    updatedAnswer.Err = true
+                    setError(true)
+                }
+                else {
+                    updatedAnswer.Err = false
+                    setError(false)
+                }
                 answer[quest_number] = updatedAnswer;
                 console.log(updatedAnswer);
 
@@ -69,7 +85,14 @@ export const Single_question = ({ quest, quest_number, answer }) => {
                         Number_Ans: '',
                         Required: quest.required
                     };
-
+                    if (updatedAnswer.Answer.length === 0 && updatedAnswer.Required === true) {
+                        updatedAnswer.Err = true
+                        setError(true)
+                    }
+                    else {
+                        updatedAnswer.Err = false
+                        setError(false)
+                    }
                     answer[quest_number] = updatedAnswer;
                     //console.log(updatedAnswer);
 
@@ -78,10 +101,11 @@ export const Single_question = ({ quest, quest_number, answer }) => {
             }
 
         }
+
     }
 
     return (
-        <User_form_questions>
+        <User_form_questions Error={error}>
             <Typography style={{ fontSize: '15px', fontWeight: '400', letterSpacing: '.1px', lineHeight: '24px', paddingBottom: '8px' }}>{quest_number + 1}. {quest.questionText}</Typography>
             {quest.required ? <Typography style={{ fontSize: '12px', fontWeight: '400', letterSpacing: '.1px', lineHeight: '24px', paddingBottom: '8px', color: 'red' }}>Обязательный вопрос</Typography> : ''}
             {

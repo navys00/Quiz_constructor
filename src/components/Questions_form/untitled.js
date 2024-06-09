@@ -357,3 +357,26 @@
                                 }
                                 res.send({ message: 'success' })
                             }
+
+
+
+
+
+
+
+                            {files !== undefined ? files.map((item, key) => {
+
+                                <Container >
+                                    <DocCard onClick={(e) => { e.stopPropagation(); navigate(`/form/${item.doc_id}`) }}  >
+                                        <DocCardImg src={example3} />
+                                    </DocCard>
+                                    <DocCardContent>
+                                        <Storage style={{ backgroundColor: '#0072bc' }}></Storage>
+                                        <span style={{ width: '120px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }} >{item.document_name}</span>
+                                        <IconButton style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                            <BsTrash onClick={(e) => { DeleteClick(e, item.doc_id) }} />
+                                        </IconButton>
+            
+                                    </DocCardContent>
+                                </Container>
+                            }) : ''}

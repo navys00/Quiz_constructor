@@ -9,17 +9,23 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 import { Accordion, AccordionSummary, Switch, Select, AccordionDetails, Button, IconButton, Typography, FormControlLabel, } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState, useEffect } from 'react';
-import { Add_footer, Add_question, Add_question_body, Add_question_bottom, Add_question_top, MenuItem_, Question, Question_FormDiv, Question_Form_top, Question_Form_top_desc, Question_Form_top_name, Question_boxes, Question_edit, Question_title_section, Save_form, Saved_question, Section, Select_, Top_header, Option, Background } from './style';
+import { Add_footer, Add_question, Add_question_body, Add_question_bottom, Add_question_top, MenuItem_, Question, Question_FormDiv, Question_Form_top, Question_Form_top_desc, Question_Form_top_name, Question_boxes, Question_edit, Question_title_section, Save_form, Saved_question, Section, Select_, Top_header, Option, Background, Option2 } from './style';
 import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux'
 import { AddNewDoc } from '../../redux/Slice';
+import { AiOutlineEye } from 'react-icons/ai'
+import { useNavigate } from 'react-router-dom'
 
 export const Question_Form = () => {
     const { id } = useParams()
-    let flag = true
+    const navigate = useNavigate()
     const dispatch = useDispatch()
+    const [flag, setflag] = useState(true)
     const [doc_name, setDoc_name] = useState()
+    const [doc_name_err, set_doc_name_err] = useState(false)
+    const [doc__desc_err, set_doc_desc_err] = useState(false)
     const [doc_desc, setDoc_desc] = useState()
+    const [texterr, settexterr] = useState(false)
     const [questions, setquestion] = useState(
         [{
             year: 2024,
@@ -63,6 +69,12 @@ export const Question_Form = () => {
     const ChangeOptionValue = (text, i, j) => {
         let optionQuestion = [...questions]
         optionQuestion[i].options[j].optionText = text
+        if (optionQuestion[i].options[j].optionText.length >= 20) {
+            settexterr(true)
+        }
+        else {
+            settexterr(false)
+        }
         setquestion(optionQuestion)
     }
     const deleteOption = (i, j) => {
@@ -100,12 +112,12 @@ export const Question_Form = () => {
 
     const AddOption = (i) => {
         let OptionQuestion = [...questions]
-        if (OptionQuestion[i].options.length < 5) {
-            OptionQuestion[i].options.push({ optionText: "Option" + (OptionQuestion[i].options.length + 1) })
-        }
-        else {
-            alert('превышено максимальное количество вопросов')
-        }
+        // if (OptionQuestion[i].options.length < 5) {
+        OptionQuestion[i].options.push({ optionText: "Option" + (OptionQuestion[i].options.length + 1) })
+        // }
+        // else {
+        //     alert('превышено максимальное количество вопросов')
+        // }
         setquestion(OptionQuestion)
     }
 
@@ -138,6 +150,9 @@ export const Question_Form = () => {
             open: true,
             required: false
         }])
+        if (questions.length === 14) {
+            alert('Достигнуто максимальное количество вопросов - 15')
+        }
     }
     const expandCloseAll = () => {
         let question = [...questions]
@@ -148,7 +163,7 @@ export const Question_Form = () => {
     }
 
     const comittoDB = () => {
-        flag = false;
+        setflag(false)
         dispatch(AddNewDoc({ id, doc_name, doc_desc, questions }))
         //console.log(questions)
     }
@@ -223,7 +238,7 @@ export const Question_Form = () => {
                                             <ShortTextIcon style={{ marginRight: "10px" }} />
                                     }
                                     <div style={{ width: '90%' }}>
-                                        <Option type='text' placeholder='option' value={ques.options[j].optionText} onChange={(e) => { ChangeOptionValue(e.target.value, index, j) }}></Option>
+                                        <Option2 helperText={texterr ? "Максимальная длина - 20" : ''} variant="standard" error={texterr} type='text' placeholder='option' value={ques.options[j].optionText} onChange={(e) => { ChangeOptionValue(e.target.value, index, j) }}></Option2>
                                     </div>
 
                                     <IconButton onClick={() => { deleteOption(index, j) }} aria-label='delete'>
@@ -297,7 +312,7 @@ export const Question_Form = () => {
                     )}
 
                     {!ques.answer ? (<Question_edit>
-                        <AddCircleOutlineIcon onClick={AddNewQuestion} style={{ cursor: 'pointer', padding: '8px 5px', color: '#5f6368' }} />
+                        <AddCircleOutlineIcon onClick={AddNewQuestion} style={{ display: questions.length >= 15 ? 'none' : '', cursor: 'pointer', padding: '8px 5px', color: '#5f6368' }} />
                     </Question_edit>) : ''}
                 </Question_boxes>
 
@@ -314,14 +329,17 @@ export const Question_Form = () => {
                     <Section>
                         <Question_title_section>
                             <Question_Form_top>
-                                <Question_Form_top_name type='text' placeholder='Untitled document' value={doc_name} onChange={(e) => { setDoc_name(e.target.value) }} />
-                                <Question_Form_top_desc type='text' placeholder='Add description' value={doc_desc} onChange={(e) => { setDoc_desc(e.target.value) }} />
+                                <Question_Form_top_name Error={doc_name_err} type='text' placeholder='Максимальная длинна - 20' value={doc_name} onChange={(e) => { setDoc_name(e.target.value); doc_name.length >= 20 ? set_doc_name_err(true) : set_doc_name_err(false) }} />
+                                <Question_Form_top_desc Error={doc__desc_err} type='text' placeholder='Максимальная длинна - 20' value={doc_desc} onChange={(e) => { setDoc_desc(e.target.value); doc_desc.length >= 20 ? set_doc_desc_err(true) : set_doc_desc_err(false) }} />
                             </Question_Form_top>
                         </Question_title_section>
 
                         {questionUI()}
                         <Save_form>
-                            <Button variant='contained' color='success' onClick={comittoDB}>Save</Button>
+                            <Button disabled={texterr || doc_name_err || doc__desc_err} variant='contained' style={{ backgroundColor: '#0072bc' }} onClick={comittoDB}>Save</Button>
+                            <IconButton style={{ width: '80px', cursor: 'pointer', height: '40px', borderRadius: '10px', backgroundColor: 'white' }} disabled={flag} onClick={() => { navigate(`/response/${id}`) }}>
+                                <AiOutlineEye />
+                            </IconButton>
                         </Save_form>
                     </Section>
                 </Question_FormDiv>

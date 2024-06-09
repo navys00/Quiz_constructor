@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 export const Submit_ = styled.div`
-    background-color:rgb(203,255,198);
+    background-color:rgb(208,248,249);
     position:absolute;
     height:100%;
     width:100%;
@@ -20,7 +20,7 @@ export const User_form_section = styled.div`
 `
 export const User_title_section = styled.div`
     background-color:white;
-    border-top:8px solid green;
+    border-top:8px solid #0072bc;
     border-radius:8px;
     padding:15px 25px;
     text-transform:capitalize;
